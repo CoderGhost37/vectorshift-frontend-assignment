@@ -1,35 +1,42 @@
 // textNode.js
 
-import { useState } from 'react';
-import { Handle, Position } from 'reactflow';
+import { useState, useEffect } from 'react';
+import { BaseNode } from './BaseNode';
+import { useStore } from '../store';
 
 export const TextNode = ({ id, data }) => {
   const [currText, setCurrText] = useState(data?.text || '{{input}}');
+  const updateNodeField = useStore((state) => state.updateNodeField);
+
+  useEffect(() => {
+    setCurrText(data?.text || '{{input}}');
+  }, [data?.text]);
 
   const handleTextChange = (e) => {
-    setCurrText(e.target.value);
+    const newValue = e.target.value;
+    setCurrText(newValue);
+    updateNodeField(id, 'text', newValue);
   };
 
   return (
-    <div style={{width: 200, height: 80, border: '1px solid black'}}>
-      <div>
-        <span>Text</span>
-      </div>
-      <div>
-        <label>
-          Text:
-          <input 
-            type="text" 
-            value={currText} 
-            onChange={handleTextChange} 
-          />
-        </label>
-      </div>
-      <Handle
-        type="source"
-        position={Position.Right}
-        id={`${id}-output`}
-      />
-    </div>
+    <BaseNode
+      id={id}
+      data={data}
+      title="Text"
+      icon="📝"
+      handles={[
+        { id: 'output', type: 'source' }
+      ]}
+      fields={[
+        {
+          type: 'textarea',
+          label: 'Text',
+          value: currText,
+          onChange: handleTextChange,
+          placeholder: 'Enter text...',
+          rows: 3
+        }
+      ]}
+    />
   );
 }

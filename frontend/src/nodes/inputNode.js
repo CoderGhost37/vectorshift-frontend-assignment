@@ -1,47 +1,61 @@
 // inputNode.js
 
-import { useState } from 'react';
-import { Handle, Position } from 'reactflow';
+import { useState, useEffect } from 'react';
+import { BaseNode } from './BaseNode';
+import { useStore } from '../store';
 
 export const InputNode = ({ id, data }) => {
   const [currName, setCurrName] = useState(data?.inputName || id.replace('customInput-', 'input_'));
   const [inputType, setInputType] = useState(data.inputType || 'Text');
+  const updateNodeField = useStore((state) => state.updateNodeField);
+
+  useEffect(() => {
+    setCurrName(data?.inputName || id.replace('customInput-', 'input_'));
+  }, [data?.inputName, id]);
+
+  useEffect(() => {
+    setInputType(data?.inputType || 'Text');
+  }, [data?.inputType]);
 
   const handleNameChange = (e) => {
-    setCurrName(e.target.value);
+    const newValue = e.target.value;
+    setCurrName(newValue);
+    updateNodeField(id, 'inputName', newValue);
   };
 
-  const handleTypeChange = (e) => {
-    setInputType(e.target.value);
+  const handleTypeChange = (value) => {
+    setInputType(value);
+    updateNodeField(id, 'inputType', value);
   };
 
   return (
-    <div style={{width: 200, height: 80, border: '1px solid black'}}>
-      <div>
-        <span>Input</span>
-      </div>
-      <div>
-        <label>
-          Name:
-          <input 
-            type="text" 
-            value={currName} 
-            onChange={handleNameChange} 
-          />
-        </label>
-        <label>
-          Type:
-          <select value={inputType} onChange={handleTypeChange}>
-            <option value="Text">Text</option>
-            <option value="File">File</option>
-          </select>
-        </label>
-      </div>
-      <Handle
-        type="source"
-        position={Position.Right}
-        id={`${id}-value`}
-      />
-    </div>
+    <BaseNode
+      id={id}
+      data={data}
+      title="Input"
+      icon="📥"
+      handles={[
+        { id: 'value', type: 'source' }
+      ]}
+      fields={[
+        {
+          type: 'text',
+          label: 'Name',
+          value: currName,
+          onChange: handleNameChange,
+          placeholder: 'input_name'
+        },
+        {
+          type: 'select',
+          label: 'Type',
+          value: inputType,
+          onChange: handleTypeChange,
+          options: [
+            { value: 'Text', label: 'Text' },
+            { value: 'File', label: 'File' }
+          ]
+        }
+      ]}
+    />
   );
 }
