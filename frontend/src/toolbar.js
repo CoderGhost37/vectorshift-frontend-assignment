@@ -1,7 +1,6 @@
 // toolbar.js
 
 import { DraggableNode } from './draggableNode';
-import { Card, CardHeader, CardTitle, CardContent } from './components/ui/card';
 
 export const PipelineToolbar = () => {
 
