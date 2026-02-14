@@ -1,21 +1,22 @@
 // toolbar.js
 
 import { DraggableNode } from './draggableNode';
+import { Card, CardHeader, CardTitle, CardContent } from './components/ui/card';
 
 export const PipelineToolbar = () => {
 
     return (
-        <div style={{ padding: '10px' }}>
-            <div style={{ marginTop: '20px', display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                <DraggableNode type='customInput' label='Input' />
-                <DraggableNode type='llm' label='LLM' />
-                <DraggableNode type='customOutput' label='Output' />
-                <DraggableNode type='text' label='Text' />
-                <DraggableNode type='api' label='API' />
-                <DraggableNode type='filter' label='Filter' />
-                <DraggableNode type='date' label='Date' />
-                <DraggableNode type='conditional' label='Conditional' />
-                <DraggableNode type='transform' label='Transform' />
+        <div className="bg-white border-b border-slate-200 px-6 py-4 shadow-sm">
+            <div className="flex items-center gap-3 flex-wrap">
+                <DraggableNode type='customInput' label='Input' icon='📥' />
+                <DraggableNode type='llm' label='LLM' icon='🤖' />
+                <DraggableNode type='customOutput' label='Output' icon='📤' />
+                <DraggableNode type='text' label='Text' icon='📝' />
+                <DraggableNode type='api' label='API' icon='🌐' />
+                <DraggableNode type='filter' label='Filter' icon='🔍' />
+                <DraggableNode type='date' label='Date' icon='📅' />
+                <DraggableNode type='conditional' label='Conditional' icon='🔀' />
+                <DraggableNode type='transform' label='Transform' icon='⚙️' />
             </div>
         </div>
     );
