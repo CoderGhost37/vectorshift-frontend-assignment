@@ -22,7 +22,7 @@ export const TransformNode = ({ id, data }) => {
       id={id}
       data={data}
       title="Transform"
-      icon="⚡"
+      icon="⚙️"
       handles={[
         { id: 'input', type: 'target' },
         { id: 'output', type: 'source' }

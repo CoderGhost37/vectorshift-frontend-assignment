@@ -36,9 +36,20 @@ export const useStore = create((set, get) => ({
       });
     },
     onConnect: (connection) => {
-      set({
-        edges: addEdge({...connection, type: 'smoothstep', animated: true, markerEnd: {type: MarkerType.Arrow, height: '20px', width: '20px'}}, get().edges),
-      });
+      const edges = get().edges;
+
+      // Check if source handle or target handle already has a connection
+      const hasExistingConnection = edges.some(edge =>
+        (edge.source === connection.source && edge.sourceHandle === connection.sourceHandle) ||
+        (edge.target === connection.target && edge.targetHandle === connection.targetHandle)
+      );
+
+      // Only add the connection if neither handle already has a connection
+      if (!hasExistingConnection) {
+        set({
+          edges: addEdge({...connection, type: 'smoothstep', animated: true, markerEnd: {type: MarkerType.Arrow, height: '20px', width: '20px'}}, edges),
+        });
+      }
     },
     updateNodeField: (nodeId, fieldName, fieldValue) => {
       set({
