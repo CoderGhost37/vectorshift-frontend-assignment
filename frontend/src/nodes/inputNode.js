@@ -5,16 +5,20 @@ import { BaseNode } from './BaseNode';
 import { useStore } from '../store';
 
 export const InputNode = ({ id, data }) => {
-  const [currName, setCurrName] = useState(data?.inputName || id.replace('customInput-', 'input_'));
-  const [inputType, setInputType] = useState(data.inputType || 'Text');
+  const [currName, setCurrName] = useState(data?.inputName !== undefined ? data.inputName : id.replace('customInput-', 'input_'));
+  const [inputType, setInputType] = useState(data?.inputType || 'Text');
   const updateNodeField = useStore((state) => state.updateNodeField);
 
   useEffect(() => {
-    setCurrName(data?.inputName || id.replace('customInput-', 'input_'));
-  }, [data?.inputName, id]);
+    if (data?.inputName !== undefined) {
+      setCurrName(data.inputName);
+    }
+  }, [data?.inputName]);
 
   useEffect(() => {
-    setInputType(data?.inputType || 'Text');
+    if (data?.inputType !== undefined) {
+      setInputType(data.inputType);
+    }
   }, [data?.inputType]);
 
   const handleNameChange = (e) => {
