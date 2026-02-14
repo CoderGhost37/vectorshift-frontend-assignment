@@ -5,11 +5,16 @@
 import { useState, useRef, useCallback } from 'react';
 import ReactFlow, { Controls, Background, MiniMap } from 'reactflow';
 import { useStore } from './store';
-import { shallow } from 'zustand/shallow';
+import { useShallow } from 'zustand/react/shallow';
 import { InputNode } from './nodes/inputNode';
 import { LLMNode } from './nodes/llmNode';
 import { OutputNode } from './nodes/outputNode';
 import { TextNode } from './nodes/textNode';
+import { ApiNode } from './nodes/apiNode';
+import { FilterNode } from './nodes/filterNode';
+import { DateNode } from './nodes/dateNode';
+import { ConditionalNode } from './nodes/conditionalNode';
+import { TransformNode } from './nodes/transformNode';
 
 import 'reactflow/dist/style.css';
 
@@ -20,6 +25,11 @@ const nodeTypes = {
   llm: LLMNode,
   customOutput: OutputNode,
   text: TextNode,
+  api: ApiNode,
+  filter: FilterNode,
+  date: DateNode,
+  conditional: ConditionalNode,
+  transform: TransformNode,
 };
 
 const selector = (state) => ({
@@ -43,7 +53,7 @@ export const PipelineUI = () => {
       onNodesChange,
       onEdgesChange,
       onConnect
-    } = useStore(selector, shallow);
+    } = useStore(useShallow(selector));
 
     const getInitNodeData = (nodeID, type) => {
       let nodeData = { id: nodeID, nodeType: `${type}` };
